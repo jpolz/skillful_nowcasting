@@ -1,0 +1,44 @@
+# Small batch training configuration
+# Suitable for debugging or limited GPU memory
+
+# Data Configuration
+data:
+  zarr_path: "data/radar_dataset.zarr"
+  input_frames: 4
+  target_frames: 18
+  train_ratio: 0.8
+  seed: 42
+
+# Model Configuration
+model:
+  forecast_steps: 18
+  input_channels: 1
+  output_shape: 128                      # Very small resolution for debug
+  latent_channels: 384                   # Much smaller channels
+  context_channels: 196                  # Much smaller channels
+  gen_lr: 5.0e-5
+  disc_lr: 2.0e-4
+  grid_lambda: 20.0
+
+# Training Configuration
+training:
+  batch_size: 1                         # Single sample batch
+  max_epochs: 50                        # Fewer epochs for debugging
+  num_workers: 0                        # No multiprocessing to save memory
+  pin_memory: false                     # Disable pin_memory to save memory
+  gradient_clip_val: 1.0
+  log_every_n_steps: 5                  # More frequent logging
+
+# Hardware Configuration
+hardware:
+  accelerator: "auto"
+  devices: 1
+  precision: "32-true"
+
+# Logging Configuration
+logging:
+  project: "dgmr-debug"
+  checkpoint_dir: "./checkpoints/debug"
+  monitor: "val/g_loss"
+  save_top_k: 2
+  mode: "min"

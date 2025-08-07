@@ -17,4 +17,8 @@ dependencies = [
     'datasets',
     'tensorflow',
     'torchinfo',
+    'xarray',
+    'zarr',
+    'scipy',
+    'dask',
 ]
