@@ -35,7 +35,7 @@ def weight_fn(y, precip_weight_cap=24.0):
 
 class DGMR(pl.LightningModule, PyTorchModelHubMixin):
     """Deep Generative Model of Radar"""
-    
+
     # Model metadata for HuggingFace Hub
     library_name = "DGMR"
     tags = ["nowcasting", "forecasting", "timeseries", "remote-sensing", "gan"]
@@ -118,7 +118,9 @@ class DGMR(pl.LightningModule, PyTorchModelHubMixin):
             latent_channels=self.latent_channels,
             context_channels=self.context_channels,
         )
-        self.generator = Generator(self.conditioning_stack, self.latent_stack, self.sampler)
+        self.generator = Generator(
+            self.conditioning_stack, self.latent_stack, self.sampler
+        )
         self.discriminator = Discriminator(input_channels)
         self.save_hyperparameters()
 
@@ -156,7 +158,9 @@ class DGMR(pl.LightningModule, PyTorchModelHubMixin):
             concatenated_outputs = self.discriminator(concatenated_inputs)
             # This is now at
             score_real, score_generated = torch.split(
-                concatenated_outputs, [real_sequence.shape[0], generated_sequence.shape[0]], dim=0
+                concatenated_outputs,
+                [real_sequence.shape[0], generated_sequence.shape[0]],
+                dim=0,
             )
             score_real_spatial, score_real_temporal = torch.split(score_real, 1, dim=1)
             score_generated_spatial, score_generated_temporal = torch.split(
@@ -213,7 +217,11 @@ class DGMR(pl.LightningModule, PyTorchModelHubMixin):
         # log sampled images
         if self.visualize:
             self.visualize_step(
-                images, future_images, generated_images, self.global_iteration, step="train"
+                images,
+                future_images,
+                generated_images,
+                self.global_iteration,
+                step="train",
             )
 
     def validation_step(self, batch, batch_idx):
@@ -236,7 +244,9 @@ class DGMR(pl.LightningModule, PyTorchModelHubMixin):
             concatenated_outputs = self.discriminator(concatenated_inputs)
             # This is now at
             score_real, score_generated = torch.split(
-                concatenated_outputs, [real_sequence.shape[0], generated_sequence.shape[0]], dim=0
+                concatenated_outputs,
+                [real_sequence.shape[0], generated_sequence.shape[0]],
+                dim=0,
             )
             score_real_spatial, score_real_temporal = torch.split(score_real, 1, dim=1)
             score_generated_spatial, score_generated_temporal = torch.split(
@@ -285,7 +295,11 @@ class DGMR(pl.LightningModule, PyTorchModelHubMixin):
         # log sampled images
         if self.visualize:
             self.visualize_step(
-                images, future_images, generated_images, self.global_iteration, step="val"
+                images,
+                future_images,
+                generated_images,
+                self.global_iteration,
+                step="val",
             )
 
     def configure_optimizers(self):
@@ -293,13 +307,22 @@ class DGMR(pl.LightningModule, PyTorchModelHubMixin):
         b1 = self.beta1
         b2 = self.beta2
 
-        opt_g = torch.optim.Adam(self.generator.parameters(), lr=self.gen_lr, betas=(b1, b2))
-        opt_d = torch.optim.Adam(self.discriminator.parameters(), lr=self.disc_lr, betas=(b1, b2))
+        opt_g = torch.optim.Adam(
+            self.generator.parameters(), lr=self.gen_lr, betas=(b1, b2)
+        )
+        opt_d = torch.optim.Adam(
+            self.discriminator.parameters(), lr=self.disc_lr, betas=(b1, b2)
+        )
 
         return [opt_g, opt_d], []
 
     def visualize_step(
-        self, x: torch.Tensor, y: torch.Tensor, y_hat: torch.Tensor, batch_idx: int, step: str
+        self,
+        x: torch.Tensor,
+        y: torch.Tensor,
+        y_hat: torch.Tensor,
+        batch_idx: int,
+        step: str,
     ) -> None:
         """Visualize the logging details of the step as a image in tensorboard."""
         # the logger you used (in this case tensorboard)
