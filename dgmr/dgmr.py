@@ -33,14 +33,13 @@ def weight_fn(y, precip_weight_cap=24.0):
     return torch.max(y + 1, torch.tensor(precip_weight_cap, device=y.device))
 
 
-class DGMR(
-    pl.LightningModule,
-    PyTorchModelHubMixin,
-    library_name="DGMR",
-    tags=["nowcasting", "forecasting", "timeseries", "remote-sensing", "gan"],
-    repo_url="https://github.com/openclimatefix/skillful_nowcasting",
-):
+class DGMR(pl.LightningModule, PyTorchModelHubMixin):
     """Deep Generative Model of Radar"""
+    
+    # Model metadata for HuggingFace Hub
+    library_name = "DGMR"
+    tags = ["nowcasting", "forecasting", "timeseries", "remote-sensing", "gan"]
+    repo_url = "https://github.com/openclimatefix/skillful_nowcasting"
 
     def __init__(
         self,

@@ -1,0 +1,20 @@
+[project]
+name = "skillful-nowcasting"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    'torch',
+    'antialiased_cnns',
+    'pytorch_msssim',
+    'numpy',
+    'torchvision>=0.11.0',
+    'pytorch_lightning',
+    'einops',
+    'huggingface_hub==0.21.4',
+    'wandb',
+    'datasets',
+    'tensorflow',
+    'torchinfo',
+]
