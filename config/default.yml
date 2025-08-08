@@ -1,0 +1,43 @@
+# DGMR Training Configuration
+
+# Data Configuration
+data:
+  zarr_path: "data/radar_dataset.zarr"  # Path to Zarr dataset
+  input_frames: 4                       # Number of input frames
+  target_frames: 18                     # Number of target frames
+  train_ratio: 0.8                      # Train/validation split ratio
+  seed: 42                              # Random seed for reproducibility
+
+# Model Configuration
+model:
+  forecast_steps: 18                    # Number of forecast steps
+  input_channels: 1                     # Number of input channels
+  output_shape: 256                     # Output spatial resolution
+  latent_channels: 768                  # Latent channels
+  context_channels: 384                 # Context channels
+  gen_lr: 5.0e-5                        # Generator learning rate
+  disc_lr: 2.0e-4                       # Discriminator learning rate
+  grid_lambda: 20.0                     # Grid loss weight
+
+# Training Configuration
+training:
+  batch_size: 8                         # Batch size
+  max_epochs: 100                       # Maximum number of epochs
+  num_workers: 4                        # Number of data workers
+  pin_memory: true                      # Pin memory for data loading
+  gradient_clip_val: 1.0                # Gradient clipping value
+  log_every_n_steps: 10                 # Logging frequency
+
+# Hardware Configuration
+hardware:
+  accelerator: "auto"                   # Accelerator type (auto, gpu, cpu)
+  devices: 1                            # Number of devices
+  precision: "32-true"                  # Training precision
+
+# Logging Configuration
+logging:
+  project: "dgmr-zarr"                  # Wandb project name
+  checkpoint_dir: "./checkpoints"       # Checkpoint directory
+  monitor: "val/g_loss"                 # Metric to monitor for checkpointing
+  save_top_k: 3                         # Number of best checkpoints to save
+  mode: "min"                           # Minimization or maximization for monitoring

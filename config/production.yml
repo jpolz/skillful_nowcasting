@@ -1,0 +1,44 @@
+# High-performance training configuration
+# For production training with multiple GPUs
+
+# Data Configuration
+data:
+  zarr_path: "data/radar_dataset.zarr"
+  input_frames: 4
+  target_frames: 18
+  train_ratio: 0.8
+  seed: 42
+
+# Model Configuration
+model:
+  forecast_steps: 18
+  input_channels: 1
+  output_shape: 512                     # High resolution
+  latent_channels: 1024                 # More channels for better capacity
+  context_channels: 512                 # More context channels
+  gen_lr: 3.0e-5                        # Slightly lower learning rate
+  disc_lr: 1.5e-4                       # Slightly lower learning rate
+  grid_lambda: 20.0
+
+# Training Configuration
+training:
+  batch_size: 16                        # Large batch size
+  max_epochs: 200                       # More epochs for full training
+  num_workers: 8                        # More workers for data loading
+  pin_memory: true
+  gradient_clip_val: 1.0
+  log_every_n_steps: 20
+
+# Hardware Configuration
+hardware:
+  accelerator: "gpu"
+  devices: 4                            # Multi-GPU training
+  precision: "16-mixed"                 # Mixed precision for efficiency
+
+# Logging Configuration
+logging:
+  project: "dgmr-production"
+  checkpoint_dir: "./checkpoints/production"
+  monitor: "val/g_loss"
+  save_top_k: 5
+  mode: "min"
