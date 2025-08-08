@@ -17,7 +17,7 @@ model:
   context_channels: 384                 # Context channels
   gen_lr: 5.0e-5                        # Generator learning rate
   disc_lr: 2.0e-4                       # Discriminator learning rate
-  grid_lambda: 20.0                     # Grid loss weight
+  grid_lambda: 1.0                     # Grid loss weight
 
 # Training Configuration
 training:

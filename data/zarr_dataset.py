@@ -79,7 +79,6 @@ class ZarrNowcastingDataset(Dataset):
 
         # Get the data variables from the dataset
         data_vars = list(sequence.data_vars.keys())
-        print(f"Data variables in sequence: {data_vars}")
 
         if len(data_vars) == 1:
             # Single data variable - get its values
